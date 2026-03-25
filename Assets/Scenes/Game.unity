@@ -480,6 +480,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2341736425123303879, guid: d99c81f116978974bab2b09d0f65fbe7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3824681103118041241, guid: 4c0d7de1f3cc2334ca820371ea987004, type: 3}
+    - target: {fileID: 2341736425123303879, guid: d99c81f116978974bab2b09d0f65fbe7, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9716981
+      objectReference: {fileID: 0}
+    - target: {fileID: 2341736425123303879, guid: d99c81f116978974bab2b09d0f65fbe7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9716981
+      objectReference: {fileID: 0}
+    - target: {fileID: 2341736425123303879, guid: d99c81f116978974bab2b09d0f65fbe7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.9716981
+      objectReference: {fileID: 0}
     - target: {fileID: 6511355620529964125, guid: d99c81f116978974bab2b09d0f65fbe7, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
