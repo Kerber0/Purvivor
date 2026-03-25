@@ -1,0 +1,44 @@
+# ========== Unity ==========
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+
+# MemoryCaptures
+MemoryCaptures/
+
+# ========== IDE ==========
+# Visual Studio
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+
+# VS Code
+.vscode/
+
+# JetBrains Rider / IntelliJ
+.idea/
+
+# ========== OS ==========
+.DS_Store
+Thumbs.db
+
+# ========== Unity Version Control (Plastic SCM) ==========
+.plastic/
+.ignore
+.ignore.conf
+
+# ========== Otros ==========
+ignore.conf
