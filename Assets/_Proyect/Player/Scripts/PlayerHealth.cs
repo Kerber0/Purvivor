@@ -12,9 +12,12 @@ public class PlayerHealth : MonoBehaviour
     private float currentHealth;
     private bool isInvulnerable;
     private float invulTimer;
+    private bool isDead = false;
 
     private PlayerStats stats;
     private DebugUI debugUI;
+
+    public bool IsDead => isDead;
 
     void Awake()
     {
@@ -32,14 +35,15 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+
         HandleInvulnerability();
         HandleRegen();
     }
 
-    // Entrada de daño
-
     public void TakeDamage(int amount)
     {
+        if (isDead) return;
         if (!CanTakeDamage()) return;
 
         float finalDamage = CalculateFinalDamage(amount);
@@ -48,8 +52,6 @@ public class PlayerHealth : MonoBehaviour
 
         ActivateInvulnerability();
     }
-
-    //Logica de daño
 
     bool CanTakeDamage()
     {
@@ -90,10 +92,10 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    // Curacion
-
     public void Heal(float amount)
     {
+        if (isDead) return;
+
         currentHealth += amount;
         currentHealth = Mathf.Min(currentHealth, stats.MaxHP);
 
@@ -112,9 +114,6 @@ public class PlayerHealth : MonoBehaviour
         healthBar?.SetHealth(currentHealth);
     }
 
-
-    //Frames de invulnerabilidad después de recibir daño
-
     void ActivateInvulnerability()
     {
         isInvulnerable = true;
@@ -127,7 +126,6 @@ public class PlayerHealth : MonoBehaviour
 
         invulTimer += Time.deltaTime;
 
-        // parpadeo
         if (sprite != null)
             sprite.enabled = !sprite.enabled;
 
@@ -140,17 +138,23 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    // Muerte
     void Die()
     {
+        if (isDead) return;
+
+        isDead = true;
+
         debugUI?.ShowMessage("💀 Player murió", 2f);
 
-        //TODO
-        // aquí luego:
-        // - restart
-        // - game over
-        // - animación
-    } 
+        Animator animator = GetComponent<Animator>();
+        if (animator != null)
+        {
+            animator.SetTrigger("Death");
+        }
 
-
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetPlayerDead();
+        }
+    }
 }

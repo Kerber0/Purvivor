@@ -31,6 +31,12 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (player == null)
         {
             rb.linearVelocity = Vector2.zero;

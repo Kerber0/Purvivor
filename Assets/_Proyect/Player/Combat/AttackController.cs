@@ -7,20 +7,23 @@ public class AttackController : MonoBehaviour
     private bool isAuto = true;
     private DebugUI debugUI;
 
-    void Awake()
+    private void Awake()
     {
         manualAttack = GetComponent<PlayerAttack>();
         autoAttack = GetComponent<AutoAttack>();
         debugUI = FindFirstObjectByType<DebugUI>();
     }
 
-    void Start()
+    private void Start()
     {
         SetAutoAttack(isAuto);
     }
 
-    void Update()
+    private void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            return;
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             isAuto = !isAuto;
@@ -28,12 +31,14 @@ public class AttackController : MonoBehaviour
         }
     }
 
-    void SetAutoAttack(bool enabled)
+    private void SetAutoAttack(bool enabled)
     {
-        autoAttack.enabled = enabled;
-        manualAttack.enabled = !enabled;
+        if (autoAttack != null)
+            autoAttack.enabled = enabled;
+
+        if (manualAttack != null)
+            manualAttack.enabled = !enabled;
 
         debugUI?.ShowMessage("Modo: " + (enabled ? "AUTO" : "MANUAL"), 2f);
     }
 }
-

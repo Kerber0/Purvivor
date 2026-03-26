@@ -3,22 +3,33 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     private DamageSystem damageSystem;
+    private Animator animator;
 
-    void Awake()
+    private void Awake()
     {
         damageSystem = GetComponent<DamageSystem>();
+        animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Attack();
         }
     }
 
-    void Attack()
+    private void Attack()
     {
+        // Dispara animación aunque no le pegues a nadie
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
         EnemyHealth target = GetTargetUnderMouse();
 
         if (target == null) return;
@@ -26,7 +37,7 @@ public class PlayerAttack : MonoBehaviour
         damageSystem.DealDamage(target, AttackType.Melee);
     }
 
-    EnemyHealth GetTargetUnderMouse()
+    private EnemyHealth GetTargetUnderMouse()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D hit = Physics2D.OverlapPoint(mousePos);

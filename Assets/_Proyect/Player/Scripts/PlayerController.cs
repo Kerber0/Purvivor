@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 dashDirection;
     private PlayerStats stats;
     private SpriteRenderer sprite;
+    private Animator animator;
 
     private bool isDashing = false;
     private float dashTimer = 0f;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
         stats = GetComponent<PlayerStats>();
         sprite = GetComponent<SpriteRenderer>();
         mapBounds = GetComponent<CircularMapBounds>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -39,7 +41,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+        {
+            movement = Vector2.zero;
+            animator.SetFloat("Speed", 0f);
+            return;
+        }
         HandleMovement();
+        animator.SetFloat("Speed", movement.magnitude);
         HandleFlip();
         HandleDashInput();
         HandleDashTimers();
@@ -59,6 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             lastDirection = movement;
         }
+        
     }
 
     void HandleFlip()
@@ -99,6 +109,7 @@ public class PlayerController : MonoBehaviour
         {
             dashRechargeTimer = dashRechargeTime;
         }
+        animator.SetTrigger("Dash");
     }
 
     void HandleDashTimers()
@@ -147,6 +158,11 @@ public class PlayerController : MonoBehaviour
 
    void FixedUpdate()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+        {
+            rb.MovePosition(rb.position);
+            return;
+        }
         Vector2 targetPosition;
 
         if (isDashing)

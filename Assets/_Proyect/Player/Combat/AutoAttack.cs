@@ -7,15 +7,20 @@ public class AutoAttack : MonoBehaviour
     private float timer;
     private PlayerStats stats;
     private DamageSystem damageSystem;
+    private Animator animator;
 
-    void Awake()
+    private void Awake()
     {
         stats = GetComponent<PlayerStats>();
         damageSystem = GetComponent<DamageSystem>();
+        animator = GetComponent<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            return;
+
         timer += Time.deltaTime;
 
         float fireRate = baseFireRate / stats.AttackSpeed;
@@ -25,26 +30,30 @@ public class AutoAttack : MonoBehaviour
             Shoot();
             timer = 0f;
         }
-        Debug.Log("AutoAttack funcionando");
     }
 
-    void Shoot()
+    private void Shoot()
     {
         EnemyHealth target = FindClosestEnemy();
 
         if (target == null) return;
 
+        if (animator != null)
+        {
+            animator.SetTrigger("Attack");
+        }
+
         damageSystem.DealDamage(target, AttackType.Ranged);
     }
 
-    EnemyHealth FindClosestEnemy()
+    private EnemyHealth FindClosestEnemy()
     {
         EnemyHealth[] enemies = FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
 
         float closestDistance = Mathf.Infinity;
         EnemyHealth closest = null;
 
-        foreach (var enemy in enemies)
+        foreach (EnemyHealth enemy in enemies)
         {
             float dist = Vector2.Distance(transform.position, enemy.transform.position);
 

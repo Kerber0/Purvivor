@@ -9,13 +9,16 @@ public class EnemyAttack : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver)
+            return;
+
         timer += Time.deltaTime;
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
+        if (GameManager.Instance != null && GameManager.Instance.IsGameOver) return;
         if (!collision.gameObject.CompareTag("Player")) return;
-
         if (timer < attackCooldown) return;
 
         PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
